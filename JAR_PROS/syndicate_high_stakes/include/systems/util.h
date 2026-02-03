@@ -3,8 +3,9 @@
 //Controller
 extern pros::Controller master;
 
-extern int clench_down;
-extern int climb_open;
+extern int matchload_down;
+extern int wing_up;
+extern int middle_up;
 
 float reduce_0_to_360(float angle);
 

@@ -7,8 +7,8 @@ pros::Motor left_back_mtr(-16, pros::v5::MotorGears::blue, pros::v5::MotorUnits:
 pros::Motor right_front_mtr(13, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
 pros::Motor right_middle_mtr(12, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
 pros::Motor right_back_mtr(11, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
-pros::Motor intake(-8, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
-pros::Motor outtake(10, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
+pros::Motor intake_motor(8, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
+pros::Motor outtake_motor(-10, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
 pros::ADIDigitalOut matchload('A');
 pros::ADIDigitalOut wing('B');
 pros::ADIDigitalOut middle('D');
@@ -30,91 +30,45 @@ Drive chassis(
 );
 
 Intake intake(
-	{intake.get_port(), outtake.get_port()}
+	{intake_motor.get_port(), outtake_motor.get_port()}
 );
 
 Pneumatics pneumatics(
-	{clench, climb}
+	{matchload, wing, middle}
 );
-
-void on_center_button() {
-	static bool pressed = false;
-	pressed = !pressed;
-	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
-	} else {
-		pros::lcd::clear_line(2);
-	}
-}
 
 void initialize() {
 	pros::lcd::initialize();
 	chassis.initialize();
 	intake.initialize();
-	pneumatics.clench_initialize();
-	pneumatics.climb_initialize();
+	pneumatics.matchload_initialize();
+	pneumatics.wing_initialize();
+	pneumatics.middle_initialize();
 }
 
 void disabled() {}
 
-int current_auton_selection = 2;
-bool auto_started = false;
+void competition_initialize() {}
 
-void competition_initialize() {
-  while(auto_started == false){            //Changing the names below will only change their names on the
-    pros::screen::erase();                 //brain screen for auton selection.
-    switch(current_auton_selection){       //Tap the brain screen to cycle through autons.
-      case 0:
-        pros::screen::print(TEXT_LARGE, 50, 50, "RedAWP");
-        break;
-      case 1:
-        pros::screen::print(TEXT_LARGE, 50, 50, "BlueAWP");
-        break;
-      case 2:
-        pros::screen::print(TEXT_LARGE, 50, 50, "Red Elim");
-        break;
-      case 3:
-        pros::screen::print(TEXT_LARGE, 50, 50, "Blue Elim");
-        break;
-    }
-    if(pros::screen::touch_status().touch_status == TOUCH_PRESSED){
-      current_auton_selection ++;
-      while(pros::screen::touch_status().touch_status == TOUCH_PRESSED  || pros::screen::touch_status().touch_status == TOUCH_HELD) {pros::delay(10);}
-    } else if (current_auton_selection == 4){
-      current_auton_selection = 0;
-    }
-    pros::Task::delay(10);
-    }
-}
 void autonomous() {
-  auto_started = true;
   chassis.set_brake_mode('H');
-  switch(current_auton_selection){  
-    case 0:
-      redSWP(); //This is the default auton, if you don't select from the brain.
-      break;        //Change these to be your own auton functions in order to use the auton selector.
-    case 1:         //Tap the screen to cycle through autons.
-      blueSWP();
-      break;
-    case 2:
-      redElim();
-      break;
-    case 3:
-      blueElim();
-      break;
- }
- chassis.set_brake_mode('C');
+      left();
+      //right();
+      //otherpersonAWP();
+      //soloAWP();
+      //skills();
 }
 
 void opcontrol(void) {
-  chassis.set_brake_mode('C');
+  chassis.set_brake_mode('H');
   while (1) {
-    chassis.arcade_control();
+    //chassis.arcade_control();
     //chassis.tank_control();
-    //chassis.arcade_control_double();
+    chassis.arcade_control_double();
 		intake.intake_control();
-		pneumatics.clench_control();
-    //pneumatics.climb_control();
+		pneumatics.matchload_control();
+		pneumatics.wing_control();
+		pneumatics.middle_control();
     pros::delay(util::DELAY_TIME); 
   }
 }

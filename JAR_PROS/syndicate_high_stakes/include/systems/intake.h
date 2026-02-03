@@ -2,8 +2,10 @@
 
 class Intake{
     public:
-    pros::MotorGroup intake;
-    Intake(std::initializer_list<std::int8_t> intake_grp);
+    pros::Motor intake;
+    pros::Motor outtake;
+
+    Intake(std::int8_t intake_port, std::int8_t outtake_port);
 
     void intake_control();
     void initialize();

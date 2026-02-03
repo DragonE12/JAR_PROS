@@ -10,13 +10,8 @@ extern Pneumatics pneumatics;
 
 void default_constants();
 
-void drive_test();
-void turn_test();
-void swing_test();
-void full_test();
-
-void redSWP();
-void blueSWP();
-void redElim();
-void blueElim();
+void left();
+void right();
+void soloAWP();
+void otherpersonAWP();
 void skills();

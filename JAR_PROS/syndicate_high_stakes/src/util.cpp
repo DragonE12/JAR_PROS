@@ -4,8 +4,9 @@
 pros::Controller master(pros::E_CONTROLLER_MASTER);
 
 //Variables
-int clench_down = 0;
-int climb_open = 0;
+int matchload_down = 0;
+int wing_up = 1;
+int middle_up = 1;
 double PI = 3.14159265359;
 
 float reduce_0_to_360(float angle) {
