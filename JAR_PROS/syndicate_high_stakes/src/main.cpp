@@ -1,14 +1,17 @@
 #include "main.h"
 
 //Motor Definitions
-pros::Motor left_front_mtr(-5, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
-pros::Motor left_middle_mtr(-6, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
-pros::Motor left_back_mtr(-19, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
-pros::Motor right_front_mtr(9, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
-pros::Motor right_middle_mtr(10, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
-pros::Motor right_back_mtr(20, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
-pros::Motor intake_mtrl(8, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
-pros::Motor intake_mtrr(-12, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
+pros::Motor left_front_mtr(-18, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
+pros::Motor left_middle_mtr(-20, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
+pros::Motor left_back_mtr(-16, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
+pros::Motor right_front_mtr(13, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
+pros::Motor right_middle_mtr(12, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
+pros::Motor right_back_mtr(11, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
+pros::Motor intake(-8, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
+pros::Motor outtake(10, pros::v5::MotorGears::blue, pros::v5::MotorUnits::degrees);
+pros::ADIDigitalOut matchload('A');
+pros::ADIDigitalOut wing('B');
+pros::ADIDigitalOut middle('D');
 //hi
 //Chassis constructor
 Drive chassis(
@@ -17,17 +20,17 @@ Drive chassis(
   //Right Motors:
   {right_front_mtr.get_port(), right_middle_mtr.get_port(), right_back_mtr.get_port()},
   //IMU Port:
-  18,
+  2,
   //Wheel diameter (4" omnis are actually closer to 4.125"):
-  4.125,
+  3.25,
   //External Gear Ratio
   0.75,
   //Gyro scale, this is what your gyro reads when you spin the robot 360 degrees.
-  360
+  358.5
 );
 
 Intake intake(
-	{intake_mtrl.get_port(), intake_mtrr.get_port()}
+	{intake.get_port(), outtake.get_port()}
 );
 
 Pneumatics pneumatics(
